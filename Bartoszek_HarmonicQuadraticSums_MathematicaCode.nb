@@ -1,0 +1,1274 @@
+(*
+Mathematica code used to check, numerically or where possible 
+analytically, the formulae derived in  K. Bartoszek 
+A miscellaneous collection of closed and asymptotic formulae 
+for harmonic and quadratic harmonic sums, arXiv: .
+The code was run using Mathematica 12.0.0 for  Linux x86 (64-bit), 
+openSUSE Leap 15.2 box. Some of the formulae here are presented in terms of harmonic sums, 
+only whose limits are known. It is interesting that we managed to provide closed form formulae,
+in terms of harmonic numbers, for a number of sums, Lemmata H.45-48, H.55,  which we could neither 
+locate in the literature, nor could Mathematica 12.0.0 handle them. 
+Furthermore, Mathematica 12.0.0 was not able to return
+the limit in Lemmata H.52, H.56-59.
+Interestingly, Mathematica 12.0.0 was able to find the limit 
+of Lemma H.52, after it was 
+transformed to Sum[(HarmonicNumber[j,1]^2)/(1/(j+1)-1/(j+2)),{j,1,Infinity}]. 
+All the references in this script point to appropriate fragments 
+of the manuscript. 
+*)
+
+(* Lemma H.1 *)
+LemH1lhs[n_]:=Sum[1/(j(j+1)),{j,1,n}]
+LemH1rhs[n_]:=1-1/(n+1)
+FullSimplify[LemH1lhs[n]-LemH1rhs[n]]
+(* result: 
+0 
+*)
+Clear[n];Limit[LemH1rhs[n],{n->Infinity}]
+(* result: 
+1
+*)
+
+(* Lemma H.2 *)
+LemH2lhs[n_]:=Sum[1/(j*(j+2)),{j,1,n}]
+LemH2rhs[n_]:=3/4-1/(2*(n+1))-1/(2*(n+2))
+Clear[n];FullSimplify[LemH2lhs[n]-LemH2rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH2rhs[n],{n->Infinity}]
+(* results: 
+3/4
+*)
+
+
+(* Lemma H.3 *)
+LemH3lhs[n_]:=Sum[1/((j+1)*(j+2)),{j,1,n}]
+LemH3rhs[n_]:=1/2-1/(n+2) 
+Clear[n];FullSimplify[LemH3lhs[n]-LemH3rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH3rhs[n],{n->Infinity}]
+(* result: 
+1/2
+*)
+
+(* Lemma H.4 *)
+LemH4lhs[n_]:=Sum[1/(j*(j+1)*(j+2)),{j,1,n}]
+LemH4rhs[n_]:=1/4-1/(2*(n+1))+1/(2*(n+2))
+Clear[n];FullSimplify[ LemH4lhs[n]-  LemH4rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH4rhs[n],{n->Infinity}]
+(* result: 
+1/4
+*)
+
+
+(* Lemma H.5 *)
+LemH5lhs[n_]:=Sum[1/(j*(j+1)^2),{j,1,n}]
+LemH5rhs[n_]:=2-HarmonicNumber[n+1,2]-1/(n+1)
+Clear[n];FullSimplify[LemH5lhs[n]-LemH5rhs[n]]
+(* result: 
+0
+*)
+LemH5rhs[Infinity]
+(* result:
+2- (Pi^2)/6
+*)
+N[LemH5rhs[Infinity]]
+(* result:
+0.355066
+*)
+
+(* Lemma H.6 *)
+LemH6lhs[n_]:=Sum[1/(j*(j+2)^2),{j,1,n}]
+LemH6rhs[n_]:=1-HarmonicNumber[n+2,2]/2-1/(4*(n+1))-1/(4*(n+2))
+Clear[n];FullSimplify[LemH6lhs[n]-LemH6rhs[n]]
+(* result: 
+0
+*)
+LemH6rhs[Infinity]
+(* result:
+1- (Pi^2)/12
+*)
+N[LemH6rhs[Infinity]]
+(* result: 
+0.177533
+*)
+
+
+(* Lemma H.7 *)
+LemH7lhs[n_]:=Sum[1/(((j+1)^2)*(j+2)),{j,1,n}]
+LemH7rhs[n_]:=HarmonicNumber[n+1,2]-(3*n+4)/(2*(n+2))
+LemH7rhs[n_]:=HarmonicNumber[n+1,2]-3/2+1/(n+2)
+Clear[n];FullSimplify[LemH7lhs[n]-LemH7rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH7rhs[n],{n->Infinity}]
+(* result: 
+-3/2+(Pi^2)/6
+*)
+N[(Pi^2)/6-3/2]
+(* result: 
+0.144934
+*)
+
+(* Lemma H.8 *)
+LemH8lhs[n_]:=Sum[1/(((j+1))*((j+2)^2)),{j,1,n}]
+LemH8rhs[n_]:=7/4-HarmonicNumber[n+2,2]-(1)/((n+2))
+Clear[n];FullSimplify[LemH8lhs[n]-LemH8rhs[n]]
+(* result:
+0
+*)
+LemH8rhs[Infinity]
+(* result: 
+7/4-(Pi^2)/6
+*)
+N[7/4-(Pi^2)/6]
+(* result: 
+0.105066
+*)
+
+(* Lemma H.9 *)
+LemH9lhs[n_]:=Sum[1/(((j+1))*((j+2)^3)),{j,1,n}]
+LemH9rhs[n_]:=23/8-HarmonicNumber[n+2,2]-HarmonicNumber[n+2,3]-(1)/((n+2))
+Clear[n];FullSimplify[LemH9lhs[n]-LemH9rhs[n]]
+(* result: 
+0
+*)
+LemH9rhs[Infinity]
+(* result: 
+23/8-(Pi^2)/6-Zeta[3]
+*)
+N[23/8-(Pi^2)/6-Zeta[3]]
+(* result:
+0.028009
+*)
+
+
+(* Lemma H.10 *)
+LemH10lhs[n_]:=Sum[1/(((j))*((j+1)^3)),{j,1,n}]
+LemH10rhs[n_]:=3-HarmonicNumber[n+1,2]-HarmonicNumber[n+1,3]-(1)/((n+1))
+Clear[n];FullSimplify[LemH10lhs[n]-LemH10rhs[n]]
+(* result: 
+0
+*)
+LemH10rhs[Infinity]
+(* result: 
+3-(Pi^2)/6-Zeta[3]
+*)
+N[3-(Pi^2)/6-Zeta[3]]
+(* result: 
+0.153009
+*)
+
+(* Lemma H.11 *)
+LemH11lhs[n_]:=Sum[1/(j*(j+2)^3),{j,1,n}]
+LemH11rhs[n_]:=(17/8-HarmonicNumber[n+2,2]/2-HarmonicNumber[n+2,3]-1/(4*(n+1))-1/(4*(n+2)))/2
+Clear[n];FullSimplify[LemH11lhs[n]-LemH11rhs[n]]
+(* result:
+0
+*)
+LemH11rhs[Infinity]
+(* result: 
+17/8-(Pi^2)/12-Zeta[3]
+*)
+N[LemH11rhs[Infinity]]
+(* result: 
+0.050238
+*)
+
+
+(* Lemma H.12 *)
+LemH12lhs[n_]:=Sum[1/(((j+1)^2)*((j+2)^2)),{j,1,n}]
+LemH12rhs[n_]:=2*HarmonicNumber[n+1,2]+2/(n+2)+1/((n+2)^2)-13/4
+Clear[n];FullSimplify[LemH12lhs[n]-LemH12rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH12rhs[n],{n->Infinity}]
+(* result: 
+(Pi^2)/3-13/4
+*)
+N[(Pi^2)/3-13/4]
+(* result:
+0.0398681
+*)
+
+
+(* Lemma H.13 *)
+LemH13lhs[n_]:=Sum[1/(((j+1)^4)*(j+2)),{j,1,n}]
+LemH13rhs[n_]:=HarmonicNumber[n+1,4]-HarmonicNumber[n+1,3]+HarmonicNumber[n+1,2]-3/2+1/(n+2)
+Clear[n];FullSimplify[LemH13lhs[n]-LemH13rhs[n]]
+(* result: 
+0
+*)
+Clear[n];FullSimplify[Limit[LemH13rhs[n],{n->Infinity}]]
+(* result: but polygamma function instead of Zeta 
+(Pi^4)/90+(Pi^2)/6-3/2-Zeta[3]
+*)
+N[(Pi^4)/90-Zeta[3]+(Pi^2)/6-3/2]
+(* result:
+0.0252004
+*)
+
+
+
+(* Lemma H.14 *)
+LemH14lhs[n_]:=Sum[1/(((j+1)^4)*((j+2)^2)),{j,1,n}]
+LemH14rhs[n_]:=HarmonicNumber[n+1,4]-2*HarmonicNumber[n+1,3]+4*HarmonicNumber[n+1,2]-21/4+4/(n+2)+1/((n+2)^2)
+Clear[n];FullSimplify[LemH14lhs[n]-LemH14rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH14rhs[n],{n->Infinity}]
+(* result: but polygamma function instead of Zeta
+(Pi^4)/90+2(Pi^2)/3-21/4-2*Zeta[3]
+*)
+N[(Pi^4)/90-2*Zeta[3]+2*(Pi^2)/3-21/4]
+(* result: 
+0.00794569
+*)
+
+
+
+(* Lemma H.15 *)
+LemH15lhs[n_]:=Sum[1/(((j+1)^2)*((j+2)^4)),{j,1,n}]
+LemH15rhs[n_]:=HarmonicNumber[n+2,4]+2*HarmonicNumber[n+2,3]+4*HarmonicNumber[n+1,2]-161/16+4/(n+2)+3/((n+2)^2)
+Clear[n];FullSimplify[LemH14rhs[n]-LemH15rhs[n]]
+(* result:
+0
+*)
+Clear[n];Limit[LemH15rhs[n],{n->Infinity}]
+(* result: but polygamma function instead of Zeta
+(Pi^4)/90+2*Zeta[3]+2*(Pi^2)/3-161/16
+*)
+N[(Pi^4)/90+2*Zeta[3]+2*(Pi^2)/3-161/16]
+(* result:
+0.00367331
+*)
+
+(* Lemma H.16 *)
+LemH16lhs[n_]:=Sum[1/(j*((j+1)^2)*(j+2)),{j,1,n}]
+LemH16rhs[n_]:=7/4-HarmonicNumber[n+1,2]-1/(2*(n+1))-1/(2*(n+2))
+Clear[n];FullSimplify[LemH16lhs[n]-LemH16rhs[n]]
+(* result:
+0
+*)
+LemH16rhs[Infinity]
+(* result:
+7/4-(Pi^2)/6
+*)
+N[LemH16rhs[Infinity]]
+(* result:
+0.105066
+*)
+
+(* Lemma H.17 *)
+LemH17lhs[n_]:=Sum[1/(j*(j+1)*(j+2)^2),{j,1,n}]
+LemH17rhs[n_]:=(HarmonicNumber[n+2,2]-3/2-1/(2*(n+1))+3/(2*(n+2)))/2
+Clear[n];FullSimplify[ LemH17lhs[n]-  LemH17rhs[n]]
+(* result:
+0
+*)
+LemH17rhs[Infinity]
+(* result:
+(Pi^2)/12-3/4
+*)
+N[LemH17rhs[Infinity]]
+(* result: 
+0.072467
+*)
+
+(* Lemma H.18 *)
+LemH18lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j))),{j,1,n}]
+LemH18rhs[n_]:=(HarmonicNumber[n,1]^2+HarmonicNumber[n,2])/2
+Clear[n];FullSimplify[LemH18lhs[n]-LemH18rhs[n]]
+(* result: 
+0
+*)
+
+
+
+
+
+(* Lemma H.19 *)
+LemH19lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j))*(j+1)),{j,1,n}]
+LemH19rhs[n_]:=HarmonicNumber[n+1,2]-HarmonicNumber[n+1,1]/(n+1)
+Clear[n];FullSimplify[LemH19lhs[n]-LemH19rhs[n]]
+(* result: 
+0
+*) 
+Clear[n];FullSimplify[Limit[LemH19rhs[n],{n->Infinity}]]
+(* result:
+(Pi^2)/6
+*)
+N[Pi*Pi/6]
+(* result:
+1.64493
+*)
+
+(* Lemma H.20 *)
+LemH20lhs[n_]:=Sum[HarmonicNumber[j,1]/(j*(j+2)),{j,1,n}]
+LemH20rhs[n_]:=(1+HarmonicNumber[n+2,2]-HarmonicNumber[n+1,1]/(n+1)-HarmonicNumber[n+2,1]/(n+2)-1/(n+2))/2
+Clear[n];FullSimplify[LemH20lhs[n]-LemH20rhs[n]]
+(* result: 
+0
+*)
+LemH20rhs[Infinity]
+(* output: 
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Indeterminate
+*)
+LemH20lhs[Infinity]
+(* result:
+(Pi^2)/12 +1/2
+*)
+N[LemH20lhs[Infinity]]
+(* result:
+1.32247
+*)
+
+
+(* Lemma H.21 *)
+LemH21lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j+1))*((j+2))),{j,1,n}]
+LemH21rhs[n_]:=1-HarmonicNumber[n+1,1]/(n+2)-1/(n+2)
+Clear[n];FullSimplify[LemH21lhs[n]-LemH21rhs[n]]
+(* result: 
+0
+*) 
+Clear[n];Limit[LemH21rhs[n],n->Infinity]
+(* result:
+1
+*)
+
+(* Lemma H.22 *)
+LemH22lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j+1)^2)),{j,1,n}]
+LemH22rhs[n_]:=Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+1}]-HarmonicNumber[n+1,3]
+n=1;N[LemH22lhs[n]-LemH22rhs[n]]
+(* result: 
+0.
+*)
+n=1000;N[LemH22lhs[n]-LemH22rhs[n]]
+(* result: 
+0.
+*)
+n=Infinity;N[LemH22lhs[n]-LemH22rhs[n]]
+(* result: 
+0.
+*)
+LemH22rhs[Infinity]
+(* result:
+Zeta[3]
+*)
+N[Zeta[3]]
+(* result:
+1.20206
+*)
+
+
+(* Lemma H.23 *)
+LemH23lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j+2)^2)),{j,1,n}]
+LemH23rhs[n_]:=Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+2}]+HarmonicNumber[n+2,2]-HarmonicNumber[n+2,3]-2+1/(n+2)
+n=1;N[LemH23lhs[n]-LemH23rhs[n]]
+(* result: 
+0.
+*)
+n=1000;N[LemH23lhs[n]-LemH23rhs[n]]
+(* result: 
+0.
+*)
+n=Infinity;N[LemH23lhs[n]-LemH23rhs[n]]
+(* result: 
+0.
+*)
+LemH23rhs[Infinity]
+(* result: 
+(Pi^2)/6+Zeta[3]-2
+*)
+N[Zeta[3]+(Pi^2)/6-2]
+(* result: 
+0.846991
+*)
+
+(* Lemma H.24 *)
+LemH24lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j+1))*((j+2)^2)),{j,1,n}]
+LemH24rhs[n_]:=3-HarmonicNumber[n+2,2]+HarmonicNumber[n+2,3]-Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+2}]-HarmonicNumber[n+1,1]/(n+2)-2/(n+2)
+n=1;N[LemH24lhs[n]-LemH24rhs[n]]
+(* result: 
+0.
+*)
+n=1000;N[LemH24lhs[n]-LemH24rhs[n]]
+(* result: 
+0.
+*)
+LemH24rhsNonVanish[n_]:=3-HarmonicNumber[n+2,2]+HarmonicNumber[n+2,3]-Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+2}]
+LemH24rhsNonVanish[Infinity]
+(* result:
+3-(Pi^2)/6-Zeta[3]
+*)
+LemH24lhs[Infinity]
+(* result:
+3-(Pi^2)/6-Zeta[3]
+*)
+N[3-(Pi^2)/6-Zeta[3]]
+(* result:
+0.153009
+*)
+
+
+
+(* Lemma H.25 *)
+LemH25lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j))*((j+1)^2)),{j,1,n}]
+LemH25rhs[n_]:=HarmonicNumber[n,2]+HarmonicNumber[n+1,3]-Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+1}]-HarmonicNumber[n,1]/(n+1)     
+n=1;N[LemH25lhs[n]-LemH25rhs[n]]
+(* result: 
+0.
+*)
+n=1000;N[LemH25lhs[n]-LemH25rhs[n]]
+(* result: 
+0.
+*)
+n=Infinity;N[LemH25lhs[n]-LemH25rhs[n]]
+(* output: 
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Indeterminate
+*)
+
+LemH25lhs[Infinity]
+(* result:
+(Pi^2)/6-Zeta[3]
+*)
+(*
+Clear[n];Limit[LemH25rhs[n],{n->Infinity}]
+Takes a prolonged time to calculate
+output:
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Limit::ivar: Infinity is not a valid variable.
+*)
+LemH25rhsNonVanish[n_]:=HarmonicNumber[n,2]+HarmonicNumber[n+1,3]-Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+1}]
+LemH25rhsNonVanish[Infinity]
+(* result:
+(Pi^2)/6-Zeta[3]
+*)
+N[Pi*Pi/6-Zeta[3]]
+(* result:
+0.442877
+*)
+
+
+(* Lemma H.26 *)
+LemH26lhs[n_]:=Sum[HarmonicNumber[j,1]/(j*(j+2)^2),{j,1,n}]
+LemH26rhs[n_]:=(5/2+HarmonicNumber[n+2,3]-HarmonicNumber[n+2,2]/2-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+2}]-HarmonicNumber[n+1,1]/(2*(n+1))-HarmonicNumber[n+2,1]/(2*(n+2))-3/(2*(n+2)))/2
+Clear[n];n=1;N[LemH26lhs[n]-LemH26rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=2;N[LemH26lhs[n]-LemH26rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=10;N[LemH26lhs[n]-LemH26rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=100;N[LemH26lhs[n]-LemH26rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=1000;N[LemH26lhs[n]-LemH26rhs[n]]
+(* result: 
+0.
+*)
+LemH26rhs[Infinity]
+(* output:
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Infinity::indet: Indeterminate expression 0 Infinity encountered.
+Indeterminate
+*)
+LemH26rhsNonVanish[n_]:=(5/2+HarmonicNumber[n+2,3]-HarmonicNumber[n+2,2]/2-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+2}])/2
+LemH26rhsNonVanish[Infinity]
+(* result: 
+5/4-(Pi^2)/24-Zeta[3]/2
+*)
+LemH26lstr[Infinity]
+(* result: 
+5/4-(Pi^2)/24-Zeta[3]/2
+*)
+N[LemH26rhsNonVanish[Infinity]]
+(* result: 
+0.237738
+*)
+
+(* Lemma H.27 *)
+LemH27lhs[n_]:=Sum[HarmonicNumber[j,1]/(((j+1)^2)*((j+2)^2)),{j,1,n}]
+LemH27rhs[n_]:=2*Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+1}]-2*HarmonicNumber[n+1,3]+HarmonicNumber[n+2,2]-4+2*HarmonicNumber[n+1,1]/(n+2)+3/((n+2))+HarmonicNumber[n+2,1]/((n+2)^2)-1/((n+2)^3)
+Clear[n];n=1;N[LemH27lhs[n]-LemH27rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=1000;N[LemH27lhs[n]-LemH27rhs[n]]
+(* result: 
+0.
+*)
+(* Clear[n];Limit[LemH27rhs[n],n->Infinity] *)
+(* did not finish calculations after prolonged time, stopped Ctrl-C *)
+Clear[n];n=1000;N[LemH27rhs[n]-(2*Zeta[3]+(Pi^2)/6-4)]
+(* result:
+-2.59094*10^(-9)
+*)
+Clear[n];n=5000;N[LemH27rhs[n]-(2*Zeta[3]+(Pi^2)/6-4)]
+(* result:
+-2.51115*10^(-11)
+*)
+LemH27lhs[Infinity]
+(* result:
+(Pi^2)/6+2*Zeta[3]-4
+*)
+LemH27rhsNonVanish[n_]:=2*Sum[HarmonicNumber[j,1]/(j^2),{j,1,n+1}]-2*HarmonicNumber[n+1,3]+HarmonicNumber[n+2,2]-4
+LemH27rhsNonVanish[Infinity]
+(* result:
+(Pi^2)/6+2*Zeta[3]-4
+*)
+N[2*Zeta[3]+(Pi^2)/6-4]
+(* result:
+0.0490479
+*)
+
+(* Lemma H.28 *)
+LemH28lhs[n_]:=Sum[HarmonicNumber[j,1]/(j*((j+1))*(j+2)),{j,1,n}]
+LemH28rhs[n_]:=(HarmonicNumber[n+1,2]-1-HarmonicNumber[n+1,1]/((n+1)*(n+2))+1/(n+2))/2
+Clear[n];FullSimplify[LemH28lhs[n]-LemH28rhs[n]]
+(* result:
+0
+*)
+Limit[LemH28rhs[n],n->Infinity]
+(* result:
+(Pi^2)/12-1/2
+*)
+N[(Pi^2)/12-0.5]
+(* result:
+0.322467
+*)
+
+(* Lemma H.29 *)
+LemH29lhs[n_]:=Sum[HarmonicNumber[j,2],{j,1,n}]
+FullSimplify[LemH29lhs[n]]
+(* result:
+-HarmonicNumber[1 + n] + (1 + n) HarmonicNumber[1 + n, 2]
+*)
+FullSimplify[LemH29lhs[n]-((n+1)*HarmonicNumber[n,2]-HarmonicNumber[n,1])]
+(* result:
+0
+*)
+
+(* Lemma H.30 *)
+LemH30lhs[n_]:=Sum[HarmonicNumber[j,2]/j,{j,1,n}]
+LemH30lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+LemH30rhs[n_]:=HarmonicNumber[n,1]*HarmonicNumber[n,2]+HarmonicNumber[n,3]-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n}]   
+Clear[n];n=1;N[LemH30lhs[n]-LemH30rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=2;N[LemH30lhs[n]-LemH30rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=10;N[LemH30lhs[n]-LemH30rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=100;N[LemH30lhs[n]-LemH30rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=1000;N[LemH30lhs[n]-LemH30rhs[n]]
+(* result:
+0
+*)
+
+(* Lemma H.31 *)
+LemH31lhs[n_]:=Sum[HarmonicNumber[j,2]/(j+1),{j,1,n}]
+LemH31rhs[n_]:=HarmonicNumber[n+1,1]*HarmonicNumber[n+1,2]-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+1}]
+Clear[n];n=1;N[LemH31lhs[n]-LemH31rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=2;N[LemH31lhs[n]-LemH31rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=10;N[LemH31lhs[n]-LemH31rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=100;N[LemH31lhs[n]-LemH31rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=1000;N[LemH31lhs[n]-LemH31rhs[n]]
+(* result:
+0
+*)
+
+(* Lemma H.32 *)
+LemH32lhs[n_]:=Sum[HarmonicNumber[j,2]/(j+2),{j,1,n}]
+LemH32rhs[n_]:=(HarmonicNumber[n+2,1]-1)*(HarmonicNumber[n+2,2])-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+2}]+1-1/(n+2)+1/((n+2)^2)
+Clear[n];n=1;N[LemH32lhs[n]-LemH32rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=2;N[LemH32lhs[n]-LemH32rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=10;N[LemH32lhs[n]-LemH32rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=100;N[LemH32lhs[n]-LemH32rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=1000;N[LemH32lhs[n]-LemH32rhs[n]]
+(* result:
+0
+*)
+
+(* Lemma H.33 *)
+LemH33lhs[n_]:=Sum[HarmonicNumber[j,2]/(j*(j+1)),{j,1,n}]
+Clear[n];FullSimplify[LemH33lhs[n]]
+(* result:
+-(HarmonicNumber[1+n,2]/(n+1)) + PolyGamma[2,2+n]/2+ Zeta[3]
+*)
+LemH33rhs[n_]:=HarmonicNumber[n,3]-HarmonicNumber[n,2]/(n+1)
+Clear[n];FullSimplify[LemH33lhs[n]-LemH33rhs[n]]
+(* result:
+0
+*)
+N[Zeta[3]]
+(* result:
+1.20206
+*)
+
+
+(* Lemma H.34 *)
+LemH34lhs[n_]:=Sum[HarmonicNumber[j,2]/(j*(j+2)),{j,1,n}]
+LemH34rhs[n_]:=(HarmonicNumber[n+1,3]+HarmonicNumber[n+1,2]-1-HarmonicNumber[n+1,2]/(n+1)-HarmonicNumber[n+1,2]/(n+2)+1/(n+2))/2 
+Clear[n];FullSimplify[LemH34lhs[n]-LemH34rhs[n]]
+(* result:
+0
+*)
+
+(* Lemma H.35 *)
+LemH35lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j+1))*(j+2)),{j,1,n}]
+LemH35rhs[n_]:=(n+1)*(HarmonicNumber[n+1,2]-1)/(n+2)
+Clear[n];FullSimplify[LemH35lhs[n]-LemH35rhs[n]]
+(* result:
+0
+*)
+Clear[n];Limit[LB25pstr[n],n->Infinity]
+(* result:
+(Pi^2)/6-1
+*)
+
+
+(* Lemma H.36 *)
+LemH36lhs[n_]:=Sum[HarmonicNumber[j+1,2]/(j*(j+1)),{j,1,n}]
+LemH36rhs[n_]:=3-HarmonicNumber[n+1,2]-HarmonicNumber[n+1,2]/(n+1)-1/(n+1)
+Clear[n];FullSimplify[LemH36lhs[n]-LemH36rhs[n]]
+(* result:
+0
+*)
+LemH36rhs[Infinity]
+(* result:
+3-(Pi^2)/6
+*)
+N[LemH36rhs[Infinity]]
+(* result:
+1.35507
+*)
+
+(* Lemma H.37 *)
+LemH37lhs[n_]:=Sum[HarmonicNumber[j+1,2]/(j*(j+2)),{j,1,n}]
+LemH37rhs[n_]:=(5/2+HarmonicNumber[n+1,3]-HarmonicNumber[n+1,2]-HarmonicNumber[n+1,2]/(n+1)-HarmonicNumber[n+1,2]/(n+2)-1/(n+1))/2
+Clear[n];FullSimplify[LemH37lhs[n]-LemH37rhs[n]]
+(* result:
+0
+*)
+LemH37rhs[Infinity]
+(* result:
+5/4-(Pi^2)/12+Zeta[3]/2
+*)
+N[LemH37rhs[Infinity]]
+(* result:
+1.02856
+*)
+
+(* Lemma H.38 *)
+LemH38lhs[n_]:=Sum[HarmonicNumber[j+1,2]/((j+1)*(j+2)),{j,1,n}]
+LemH38rhs[n_]:=HarmonicNumber[n+1,3]-1/2-HarmonicNumber[n+1,2]/(n+2)
+Clear[n];FullSimplify[LemH38lhs[n]-LemH38rhs[n]]
+(* result:
+0
+*)
+LemH38rhs[Infinity]
+(* result:
+Zeta[3]-1/2
+*)
+N[LemH38rhs[Infinity]]
+(* result:
+0.702057
+*)
+
+(* Lemma H.39 *)
+LemH39lhs[n_]:=Sum[HarmonicNumber[j+2,2]/(j*(j+1)),{j,1,n}]
+LemH39rhs[n_]:=9/4-HarmonicNumber[n+1,2]/2-HarmonicNumber[n+1,2]/(n+1)-5/(4*(n+1))+3/(4*(n+2))+1/(2*(n+2)^2)
+Clear[n];FullSimplify[ LemH39lhs[n]-  LemH39rhs[n]]
+(* result: 
+0
+*)
+LemH39rhs[Infinity]
+(* result:
+9/4-(Pi^2)/12
+*)
+N[9/4-(Pi^2)/12]
+(* result:
+1.42753
+*)
+
+(* Lemma H.40 *)
+LemH40lhs[n_]:=Sum[HarmonicNumber[j+2,2]/(j*(j+2)),{j,1,n}]
+LemH40rhs[n_]:=(37/8-3*HarmonicNumber[n+1,2]/2-HarmonicNumber[n+1,2]/(n+1)-HarmonicNumber[n+2,2]/(n+2)-5/(4*(n+1))-1/(4*(n+2))-1/(2*(n+2)^2))/2
+Clear[n];FullSimplify[LemH40lhs[n]-LemH40rhs[n]]
+(* result: 
+0
+*)
+LemH40rhs[Infinity]
+(* result:
+37/16-(Pi^2)/8
+*)
+N[LemH40rhs[Infinity]]
+(* result:
+1.0788
+*)
+
+
+(* Lemma H.41 *)
+LemH41lhs[n_]:=Sum[HarmonicNumber[j+2,2]/((j+1)*(j+2)),{j,1,n}]
+LemH41rhs[n_]:=19/8-HarmonicNumber[n+2,2]-HarmonicNumber[n+2,2]/(n+2)-1/(n+2)
+Clear[n];FullSimplify[LemH41lhs[n]-LemH41rhs[n]]
+(* result: 
+0
+*)
+LemH41rhs[Infinity]
+(* result
+19/8- (Pi^2)/6
+*)
+N[LemH33rhs[Infinity]]
+(* result:
+0.730066
+*)
+
+(* Lemma H.42 *)
+LemH42lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j)^2)),{j,1,n}]
+LemH42rhs[n_]:=(HarmonicNumber[n,2]^2+HarmonicNumber[n,4])/2
+Clear[n];FullSimplify[LemH42lhs[n]-LemH42rhs[n]]
+(* result:
+0
+*)
+LemH42rhs[Infinity]
+(* result:
+7*(Pi^4)/360
+*)
+N[7*(Pi^4)/360]
+(* result:
+1.89407
+*)
+
+
+(* Lemma H.43 *)
+LemH43lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j+1)^2)),{j,1,n}]
+LemH43rhs[n_]:=(HarmonicNumber[n+1,2]^2-HarmonicNumber[n+1,4])/2
+Clear[n];FullSimplify[LemH43lhs[n]-LemH43rhs[n]]
+(* result:
+0
+*)
+LemH43rhs[Infinity]
+(* result:
+(Pi^4)/120
+*)
+N[(Pi^4)/120]
+(* result: 
+0.811742
+*)
+
+
+(* Lemma H.44 *)
+LemH44lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j+2)^2)),{j,1,n}]
+LemH44rhs[n_]:=(HarmonicNumber[n+2,2]^2-HarmonicNumber[n+2,4])/2-2*HarmonicNumber[n+2,2]+3-(2*n+3)/((n+2)^2)
+Clear[n];FullSimplify[LemH44lhs[n]-LemH44rhs[n]]
+(* result: 
+0
+*)
+Clear[n];Limit[LemH44rhs[n],n->Infinity]
+(* result:
+3- (Pi^2)/3 + (Pi^4)/120
+*)
+N[3+(Pi^4)/120-(Pi^2)/3]
+(* result:
+0.521874
+*)
+
+
+(* Lemma H.45 *)
+LemH45lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j+1)^2)*(j+2)),{j,1,n}]
+LemH45rhs[n_]:=(HarmonicNumber[n+1,2]^2)/2-HarmonicNumber[n+1,4]/2-HarmonicNumber[n+1,2]+1+HarmonicNumber[n+1,2]/(n+2)-1/(n+2)
+n=1;N[LemH45lhs[n]- LemH45rhs[n]] 
+(* result: 
+0.
+*)
+n=100;N[LemH45lhs[n]- LemH45rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=1000;N[LemH45lhs[n]- LemH45rhs[n]]
+(* result: 
+0.
+*)
+LemH45rhs[Infinity]
+(* result:
+1-(Pi^2)/6+(Pi^4)/120
+*)
+N[(Pi^4)/120-(Pi^2)/6+1]
+(* result:
+0.166808
+*)
+
+
+(* Lemma H.46 *)
+LemH46lhs[n_]:=Sum[HarmonicNumber[j,2]/((j+1)*((j+2)^2)),{j,1,n}]
+LemH46rhs[n_]:=3*HarmonicNumber[n+1,2]-(HarmonicNumber[n+2,2]^2)/2+HarmonicNumber[n+2,4]/2-4-HarmonicNumber[n+1,2]/(n+2)+1/(n+2)+(2*n+5)/((n+2)^2)
+Clear[n];n=1;N[LemH46lhs[n]-LemH46rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=1000;N[LemH46lhs[n]-LemH46rhs[n]] 
+(* result: 
+0.
+*)
+LemH46lhs[Infinity]
+(* result: 
+-4 + (Pi^2)/2-(Pi^4)/120
+*)
+Clear[n];Limit[LemH46rhs[n],n->Infinity]
+(* result: 
+-4 + (Pi^2)/2-(Pi^4)/120
+*)
+N[-(Pi^4)/120+(Pi^2)/2-4]
+(* result:
+0.12306
+*)
+
+
+
+(* Lemma H.47 *)
+LemH47lhs[n_]:=Sum[HarmonicNumber[j,2]/(((j+1)^2)*((j+2)^2)),{j,1,n}]
+LemH47rhs[n_]:=HarmonicNumber[n+1,2]^2-HarmonicNumber[n+1,4]-4*HarmonicNumber[n+1,2]+5+HarmonicNumber[n+1,2]/((n+2)^2)+2*HarmonicNumber[n+1,2]/(n+2)-2/(n+2)-(2*n+5)/((n+2)^2)
+Clear[n];n=1;LemH47lhs[n]-LemH47rhs[n]
+(* result:
+0
+*)
+Clear[n];n=1000;LemH47lhs[n]-LemH47rhs[n]
+(* result:
+0
+*)
+LemH47lhs[Infinity]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];Limit[LemH47lhs[n],n->Infinity]
+(* result:
+5-2*(Pi^2)/3+(Pi^4)/60
+*)
+N[(Pi^4)/60-2*(Pi^2)/3+5]
+(* result:
+0.0437486
+*)
+
+
+
+(* Lemma H.48 *)
+LemH48lhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/((j+1)*(j+2)),{j,1,n}]
+LemH48rhs[n_]:=HarmonicNumber[n+1,2]+(n^2+n-1)/((n+1)^2)- 2*HarmonicNumber[n,1]/(n+1)-(HarmonicNumber[n,1]^2)/(n+2) 
+Clear[n];n=1;LemH48lhs[n]-LemH48rhs[n]
+(* result:
+0
+*)
+Clear[n];n=1000;LemH48lhs[n]-LemH48rhs[n]
+(* result:
+0
+*)
+Clear[n];Limit[LemH48rhs[n],n->Infinity]
+(* result:
+1+ (Pi^2)/6
+*) 
+N[(Pi^2)/6+1]
+(* result: 
+2.64493
+*)
+
+
+(* Lemma H.49 *)
+LemH49lhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/((j+1)^2),{j,1,n}]
+LemH49rhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/(j^2),{j,1,n+1}]-2*Sum[(HarmonicNumber[j,1])/(j^3),{j,1,n+1}]+HarmonicNumber[n+1,4]
+Clear[n];n=1;LemH49lhs[n]-LemH49rhs[n]
+(* result:
+0
+*)
+Clear[n];n=1000;LemH49lhs[n]-LemH49rhs[n]
+(* result:
+0
+*)
+LemH49rhs[Infinity]
+(* result:
+11*(Pi^4)/360
+*)
+N[11*(Pi^4)/360]
+(* result:
+2.97639
+*)
+
+(* Lemma H.50 *)
+LemH50lhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/((j+2)^2),{j,1,n}]
+LemH50rhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/(j^2),{j,1,n+2}]+2*Sum[(HarmonicNumber[j,1])/(j^2),{j,1,n+2}]-2*Sum[(HarmonicNumber[j,1])/(j^3),{j,1,n+2}]-2*HarmonicNumber[n+2,3]+HarmonicNumber[n+2,4]-3+2*(HarmonicNumber[n+2,1])/(n+2)+2/(n+2)-1/((n+2)^2)
+Clear[n];n=1;N[LemH50lhs[n]-LemH50rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH50lhs[n]-LemH50rhs[n]]
+(* result:
+0.
+*)
+(*
+The two below take a long time to run
+Clear[n];n=10000;N[LemH50lhs[n]-(11*(Pi^4)/360+2*Zeta[3]-3)]
+(* result:
+-0.0117346
+*)
+Clear[n];n=20000;N[LemH50lhs[n]-(11*(Pi^4)/360+2*Zeta[3]-3)]
+(* result:
+-0.0066396
+*)
+*)
+N[11*(Pi^4)/360+2*Zeta[3]-3]
+(* result:
+2.3805
+*)
+
+(* Lemma H.51 *)
+LemH51lhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/((j+1)*((j+2)^2)),{j,1,n}]
+LemH51rhs[n_]:=HarmonicNumber[n+1,2]+2*HarmonicNumber[n+2,3]-HarmonicNumber[n+2,4]+4-Sum[(HarmonicNumber[j,1]^2)/(j^2),{j,1,n+2}]-2*Sum[(HarmonicNumber[j,1])/(j^2),{j,1,n+2}] +2*Sum[(HarmonicNumber[j,1])/(j^3),{j,1,n+2}] -2*HarmonicNumber[n,1]/(n+1)-2*HarmonicNumber[n+2,1]/(n+2)-(HarmonicNumber[n,1]^2)/(n+2)-(n+2)/((n+1)^2)-2/(n+2)+1/((n+2)^2) 
+Clear[n];n=1;N[LemH51lhs[n]-LemH51rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH51lhs[n]-LemH51rhs[n]]
+(* result:
+0.
+*)
+LemH51lhs[Infinity]
+(* result:
+4+(Pi^2)/6-11*(Pi^4)/360-2*Zeta[3]
+*)
+Clear[n];n=2000;N[LemH51rhs[n]-(4+(Pi^2)/6-11*(Pi^4)/360-2*Zeta[3])]
+(* result:
+-9.42605*10^(-6)
+*)
+N[4+(Pi^2)/6-11*(Pi^4)/360-2*Zeta[3]]
+(* result:
+0.264431
+*)
+
+(* Lemma H.52 *)
+LemH52lhs[n_]:=Sum[(HarmonicNumber[j,1]^2)/(((j+1)^2)*((j+2)^2)),{j,1,n}]
+LemH52rhs[n_]:=2*Sum[(HarmonicNumber[j,1]^2)/(j^2),{j,1,n+1}]-4*Sum[(HarmonicNumber[j,1])/(j^3),{j,1,n+1}]+2*Sum[(HarmonicNumber[j,1])/(j^2),{j,1,n+2}]+2*HarmonicNumber[n+1,4]-2*HarmonicNumber[n+1,2]-2*HarmonicNumber[n+2,3]-5+4*HarmonicNumber[n,1]/(n+1)+2*(HarmonicNumber[n,1]^2)/(n+2)+2*HarmonicNumber[n+2,1]/(n+2)+(HarmonicNumber[n+2,1]^2)/((n+2)^2)-2*(HarmonicNumber[n+2,1])/((n+2)^3)+2/(n+2)+2*(n+2)/((n+1)^2)-1/((n+2)^2)+1/((n+2)^4)
+Clear[n];n=1;N[LemH52lhs[n]-LemH52rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH52lhs[n]-LemH52rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=3000;N[LemH52rhs[n]-(11*(Pi^4)/180+2*Zeta[3]-(Pi^2)/3-5)]
+(* result:
+-9.81125*10^(-10)
+*)
+N[11*(Pi^4)/180+2*Zeta[3]-(Pi^2)/3-5]
+(* result:
+0.0670235
+*)
+LemH52lhs[Infinity]
+(* output: just rewrites the input, no new evaluation *)
+
+
+(* Lemma H.53 *)
+LemH53lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(((j+1))),{j,1,n}] 
+LemH53rhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(j),{j,1,n+1}]-2*Sum[(HarmonicNumber[j,2])/(j^3),{j,1,n+1}]+HarmonicNumber[n+1,5]
+Clear[n];n=1;LemH53lhs[n]-LemH53rhs[n]
+(* result:
+0
+*)
+Clear[n];n=1000;LemH53lhs[n]-LemH53rhs[n]
+(* result:
+0
+*)
+
+(* Lemma H.54 *)
+LemH54lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(((j+2))),{j,1,n}]
+LemH54rhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(j),{j,1,n+2}]-2*Sum[(HarmonicNumber[j,2])/(j^3),{j,1,n+2}]-HarmonicNumber[n+1,2]^2+HarmonicNumber[n+1,2]+HarmonicNumber[n+1,3]+HarmonicNumber[n+2,5]-1-2*HarmonicNumber[n+1,2]/(n+2)+1/(n+2)
+Clear[n];n=1;LemH54lhs[n]-LemH54rhs[n]
+(* result:
+0
+*)
+Clear[n];n=1000;LemH54lhs[n]-LemH54rhs[n]
+(* result:
+0
+*)
+
+(* Lemma H.55 *)
+LemH55lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/((j+1)*(j+2)),{j,1,n}]
+LemH55rhs[n_]:=HarmonicNumber[n+1,2]^2-HarmonicNumber[n+1,2]-HarmonicNumber[n+1,3]+1-(HarmonicNumber[n+2,2]^2)/(n+2)+2*HarmonicNumber[n+1,2]/(n+2)-1/(n+2)+2*HarmonicNumber[n+2,2]/((n+2)^3)-1/((n+2)^5) 
+Clear[n];LemH55lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];n=1;LemH55lhs[n]-LemH55rhs[n]
+(* result:
+0.
+*)
+Clear[n];n=1000;LemH55lhs[n]-LemH55rhs[n]
+(* result:
+0.
+*)
+LemH55rhs[Infinity]
+(* result: 
+1-(Pi^2)/6+(Pi^4)/36-Zeta[3]+1
+*)
+N[(Pi^4)/36-(Pi^2)/6-Zeta[3]+1]
+(* result:
+0.858817
+*)
+
+
+(* Lemma H.56 *)
+LemH56lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(j^2),{j,1,n}]
+LemH56rhs[n_]:=(HarmonicNumber[n,2]^3)/3+Sum[(HarmonicNumber[j,2])/(j^4),{j,1,n}]-HarmonicNumber[n,6]/3
+Clear[n];n=1;N[LemH56lhs[n]-LemH56rhs[n]]
+(* result: 
+0.
+*)
+Clear[n];n=1000;N[LemH56lhs[n]-LemH56rhs[n]]
+(* result: 
+0.
+*)
+LemH56rhs[Infinity]
+(* result:
+19*(Pi^6)/22680+(Zeta[3])^2
+*)
+N[Zeta[3]^2+19*(Pi^6)/22680]
+(* result:
+2.25034
+*)
+(*
+LemH56lhs[Infinity]
+did not finish calculations after prolonged time, stopped Ctrl-C 
+*)
+(* takes a long time to run
+N[LemH56lhs[200000]] 
+*)
+(* result:
+2.25032
+*)
+
+
+
+
+(* Lemma H.57 *)
+LemH57lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/((j+1)^2),{j,1,n}]
+LemH57rhs[n_]:=(HarmonicNumber[n,2]^3)/3+2*HarmonicNumber[n,6]/3-Sum[HarmonicNumber[j,2]/(j^4),{j,1,n}]+(HarmonicNumber[n+1,2]^2)/((n+1)^2)-2*HarmonicNumber[n+1,2]/((n+1)^4)+1/((n+1)^6) 
+Clear[n];n=1;N[LemH57lhs[n]-LemH57rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH57lhs[n]-LemH57rhs[n]]
+(* result:
+0.
+*)
+LemH57rhs[Infinity]
+(* result:
+59*(Pi^6)/22680-(Zeta[3])^2
+*)
+N[59*(Pi^6)/22680-Zeta[3]^2]
+(* result:
+1.05603
+*)
+(* takes a long time to run
+LemH57lhs[Infinity]
+*)
+(* output: just rewrites the input, no new evaluation *)
+
+
+(* Lemma H.58 *)
+LemH58lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/((j+2)^2),{j,1,n}]
+LemH58rhs[n_]:=(HarmonicNumber[n,2]^3)/3+2*HarmonicNumber[n,6]/3-Sum[HarmonicNumber[j,2]/(j^4),{j,1,n}]+4*HarmonicNumber[n+1,2]+2*HarmonicNumber[n+1,3]+HarmonicNumber[n+1,4]-2*HarmonicNumber[n+1,2]^2-5+(HarmonicNumber[n+1,2]^2)/((n+1)^2)+(HarmonicNumber[n+2,2]^2)/((n+2)^2)-4*HarmonicNumber[n+1,2]/(n+2)-2*HarmonicNumber[n+1,2]/((n+2)^2)-2*HarmonicNumber[n+1,2]/((n+1)^4)-2*HarmonicNumber[n+2,2]/((n+2)^4)+(4*n+9)/((n+2)^2)+1/((n+1)^6)+1/((n+2)^6)
+Clear[n];n=1;N[LemH58lhs[n]-LemH58rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH58lhs[n]-LemH58rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH58rhs[n]-(59*(Pi^6)/22680-2*(Pi^4)/45+2*(Pi^2)/3+2*Zeta[3]-Zeta[3]^2-5)]
+(* result:
+-0.00269742
+*)
+Clear[n];n=2000;N[LemH58rhs[n]-(59*(Pi^6)/22680-2*(Pi^4)/45+2*(Pi^2)/3+2*Zeta[3]-Zeta[3]^2-5)]
+(* result:
+-0.0013508
+*)
+Clear[n];n=5000;N[LemH58rhs[n]-(59*(Pi^6)/22680-2*(Pi^4)/45+2*(Pi^2)/3+2*Zeta[3]-Zeta[3]^2-5)]
+(* result:
+-0.000540825
+*)
+N[59*(Pi^6)/22680-2*(Pi^4)/45+4*(Pi^2)/6+2*Zeta[3]-Zeta[3]^2-5]
+(* result:
+0.710585
+*)
+
+(* Lemma H.59 *)
+LemH59lhs[n_]:=Sum[(HarmonicNumber[j,2]^2)/(((j+1)^2)*((j+2)^2)),{j,1,n}]
+LemH59rhs[n_]:=2*(HarmonicNumber[n,2]^3)/3-4*(HarmonicNumber[n+1,2]^2)+6*HarmonicNumber[n+1,2]+4*HarmonicNumber[n+1,3]+HarmonicNumber[n+1,4]+4*HarmonicNumber[n,6]/3-2*Sum[HarmonicNumber[j,2]/(j^4),{j,1,n}]-7+2*(HarmonicNumber[n+2,2]^2)/(n+2)-8*HarmonicNumber[n+1,2]/(n+2)+2/(n+2)+(4*n+9)/((n+2)^2)+2*(HarmonicNumber[n+1,2]^2)/((n+1)^2)+(HarmonicNumber[n+2,2]^2)/((n+2)^2)-2*HarmonicNumber[n+1,2]/((n+2)^2)-4*HarmonicNumber[n+2,2]/((n+2)^3)-4*HarmonicNumber[n+1,2]/((n+1)^4)-2*HarmonicNumber[n+2,2]/((n+2)^4)+2/((n+2)^5)+2/((n+1)^6)+1/((n+2)^6)  
+Clearn[n];n=1;N[LemH59lhs[n]-LemH59rhs[n]]
+(* result:
+0.
+*)
+Clearn[n];n=1000;N[LemH59lhs[n]-LemH59rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=2000;N[LemH59rhs[n]-(59*(Pi^6)/11340-(Pi^4)/10+(Pi^2)+4*Zeta[3]-2*Zeta[3]^2-7)]
+(* result:
+-1.12352*10^(-10)
+*)
+Clear[n];n=5000;N[LemH59rhs[n]-(59*(Pi^6)/11340-(Pi^4)/10+(Pi^2)+4*Zeta[3]-2*Zeta[3]^2-7)]
+(* result:
+-7.20224*10^(-12)
+*)
+N[59*(Pi^6)/11340-(Pi^4)/10+(Pi^2)-2*Zeta[3]^2+4*Zeta[3]-7]
+(* result:
+0.048978
+*)
+
+
+
+(* Lemma H.60 *)
+LemH60lhs[n_]:=Sum[HarmonicNumber[j,3]/j,{j,1,n}]
+LemH60rhs[n_]:=HarmonicNumber[n,1]*HarmonicNumber[n,3]+HarmonicNumber[n,4]-Sum[HarmonicNumber[j,1]/(j^3),{j,1,n}]
+Clear[n];LemH60lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];n=1;FullSimplify[LemH60lhs[n]-LemH60rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=2;FullSimplify[LemH60lhs[n]-LemH60rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=10;FullSimplify[LemH60lhs[n]-LemH60rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=100;FullSimplify[LemH60lhs[n]-LemH60rhs[n]]
+(* result:
+0
+*)
+Clear[n];n=1000;FullSimplify[LemH60lhs[n]-LemH60rhs[n]]
+(* result:
+0
+*)
+
+(* Lemma H.61 *)
+LemH61lhs[n_]:=Sum[HarmonicNumber[j,1]*HarmonicNumber[j,2]/j,{j,1,n}]
+LemH61rhs[n_]:=((HarmonicNumber[n,1]^2)*HarmonicNumber[n,2]-HarmonicNumber[n,4]+Sum[HarmonicNumber[j,2]/(j^2),{j,1,n}]+2*Sum[HarmonicNumber[j,1]/(j^3),{j,1,n}]-Sum[(HarmonicNumber[j,1]^2)/(j^2),{j,1,n}])/2
+Clear[n];LemH61lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];n=1;N[FullSimplify[LemH61lhs[n]-LemH61rhs[n]]]
+(* result:
+0.
+*)
+Clear[n];n=2;N[FullSimplify[LemH61lhs[n]-LemH61rhs[n]]]
+(* result:
+0.
+*)
+Clear[n];n=10;N[FullSimplify[LemH61lhs[n]-LemH61rhs[n]]]
+(* result:
+0.
+*)
+Clear[n];n=100;N[FullSimplify[LemH61lhs[n]-LemH61rhs[n]]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[FullSimplify[LemH61lhs[n]-LemH61rhs[n]]]
+(* result:
+0.
+*)
+
+(* Lemma H.62 *)
+LemH62lhs[n_]:=Sum[HarmonicNumber[j+1,1]*HarmonicNumber[j+1,2]/j,{j,1,n}]
+LemH62rhs[n_]:=((HarmonicNumber[n,1]^2)*HarmonicNumber[n,2])/2+HarmonicNumber[n,3]+Sum[HarmonicNumber[j,2]/(j*j),{j,1,n}]/2+Sum[HarmonicNumber[j,1]/(j*j*j),{j,1,n}]+3-Sum[(HarmonicNumber[j,1]^2)/(j*j),{j,1,n}]/2-Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+1}]-HarmonicNumber[n,4]/2-HarmonicNumber[n,1]/(n+1)-HarmonicNumber[n,2]/(n+1)-1/(n+1)-1/((n+1)^2)
+Clear[n];LemH62lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];n=1;N[LemH62lhs[n]-LemH62rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=10;N[LemH62lhs[n]-LemH62rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=100;N[LemH62lhs[n]-LemH62rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH62lhs[n]-LemH62rhs[n]]
+(* result:
+0.
+*)
+
+(* Lemma H.63 *)
+LemH63lhs[n_]:=Sum[HarmonicNumber[j+2,1]*HarmonicNumber[j+2,2]/j,{j,1,n}]
+LemH63rhs[n_]:=((HarmonicNumber[n,1]^2)*HarmonicNumber[n,2])/2+Sum[HarmonicNumber[j,2]/(j*j),{j,1,n}]/2+Sum[HarmonicNumber[j,1]/(j*j*j),{j,1,n}]-Sum[(HarmonicNumber[j,1]^2)/(j*j),{j,1,n}]/2-3*Sum[HarmonicNumber[j,1]/(j*j),{j,1,n+1}]/2-HarmonicNumber[n+1,2]/2+3*HarmonicNumber[n+1,3]/2-HarmonicNumber[n,4]/2+93/16-5*HarmonicNumber[n+1,1]/(4*(n+1))-HarmonicNumber[n+2,1]/(4*(n+2))-3*HarmonicNumber[n,2]/(2*(n+1))-HarmonicNumber[n+1,2]/(2*(n+2))-15/(8*(n+1))-1/(8*(n+2))-HarmonicNumber[n+2,1]/(2*(n+2)^2)-3/(2*(n+1)^3)
+Clear[n];LemH63lhs[n]
+(* output: just rewrites the input, no new evaluation *)
+Clear[n];n=1;N[LemH63lhs[n]-LemH63rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=10;N[LemH63lhs[n]-LemH63rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=100;N[LemH63lhs[n]-LemH63rhs[n]]
+(* result:
+0.
+*)
+Clear[n];n=1000;N[LemH63lhs[n]-LemH63rhs[n]]
+(* result:
+0.
+*)
+
