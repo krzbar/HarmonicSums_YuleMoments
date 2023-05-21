@@ -1,0 +1,145 @@
+(*
+Mathematica code used to check, numerically or where possible 
+analytically, the formulae derived in  K. Bartoszek 
+First two moments and cross–moments for the
+pure birth tree's height and random pair's
+coalescent times, arXiv: .
+The code was run using Mathematica 12.0.0 for  Linux x86 (64-bit), 
+openSUSE Leap 15.2 box. All the references in this script point to 
+appropriate fragments of the manuscript. 
+*)
+
+PrPink[n_,k_]:=(2*(n+1)/(n-1))*(1/((k+1)*(k+2)))
+
+
+(* Example Y1.2 *)
+Etaun[n_]:=(n+1)*(HarmonicNumber[n,1]-2)/(n-1)+2/(n-1)
+Etaun2[n_]:=(n+1)*((HarmonicNumber[n,1]-2)^2+HarmonicNumber[n,2])/(n-1)-4/(n-1)
+
+(* Lemma Y1.1 *)
+LemY11lhs[n_]:=((4*n+2)/(n-1))*HarmonicNumber[n,2]-2*(HarmonicNumber[n,1]^2)/(n-1)-4*HarmonicNumber[n,1]/(n-1)
+
+
+(* Lemma Y1.5 *)
+LemY15lhs[n_]:=Sum[(HarmonicNumber[k,2]+(HarmonicNumber[k,1]^2))*(PrPink[n,k]^2),{k,1,n-1}]+2*Sum[Sum[((HarmonicNumber[k1,2]+(HarmonicNumber[k1,1]^2))+HarmonicNumber[k1,1]*(HarmonicNumber[k2,1]-HarmonicNumber[k1,1]))*(PrPink[n,k1]*PrPink[n,k2]),{k2,k1+1,n-1}],{k1,1,n-1}]
+LemY15rhs[n_]:=4*(((n+1)/(n-1))^2)*(2*HarmonicNumber[n,2]-2-2*HarmonicNumber[n+1,1]/(n+1)-(HarmonicNumber[n+1,1]^2)/((n+1)^2)+2*(HarmonicNumber[n,1]^2)/((n+1)^2)+2*(HarmonicNumber[n+1,1])/((n+1)^2)+2*(HarmonicNumber[n+1,1])/((n+1)^3)-((4*n+3)*HarmonicNumber[n,2])/(((n+1)^2))+2*HarmonicNumber[n,2]/((n+1))+4/(n+1)-2*(n+1)/(n^2)+2/(n*(n+1))+4/(n*(n+1)^2)+2/((n^2)*(n+1)^2)+4/((n+1)^2)-2/((n+1)^3)-1/((n+1)^4))
+Clear[n];FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* does not do any real evaluation of the LHS *)
+Clear[n];n=1;FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* output: Power::infy: Infinite expression 1/0 encountered. Infinity::indet: Indeterminate expression 0 ComplexInfinity encountered. Indeterminate *)
+Clear[n];n=2;FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* result: 0 *)
+Clear[n];n=10;FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* result: 0 *)
+Clear[n];n=100;FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* result: 0 *)
+Clear[n];n=1000;FullSimplify[LemY15lhs[n]-LemY15rhs[n]]
+(* result: 0 but requires a lot of time to obtain*)
+Clear[n];n=1000;N[LemY15rhs[n]]
+(* result: 5.10718 *)
+Clear[n];n=2000;N[LemY15rhs[n]]
+(* result: 5.13054 *)
+Clear[n];n=5000;N[LemY15rhs[n]]
+(* result: 5.14642 *)
+Clear[n];n=10000;N[LemY15rhs[n]]
+(* result: 5.15239 *)
+N[4*(Pi^2)/3-8]
+(* result: 5.15947 *)
+LemY15rhsNonVanish[n_]:=4*(2*HarmonicNumber[n,2]-2)
+LemY15rhsNonVanish[Infinity]
+(* result: 4*(-2+(Pi^2)/3) *)
+N[LemY15rhsNonVanish[Infinity]]
+(* result: 5.15947 *)
+
+
+(* Lemma Y1.6 *)
+
+LemY16lhsline3[n_]:=((HarmonicNumber[n,1])^2)+(HarmonicNumber[n,2]) -(4*n/(n-1))*((HarmonicNumber[n,1])+(HarmonicNumber[n,2]) -1-((HarmonicNumber[n,1])^2)/n)+4*(((n+1)/(n-1))^2)*(2*(HarmonicNumber[n,2]) -2- 2*(HarmonicNumber[n+1,1])/(n+1)-((HarmonicNumber[n+1,1])^2)/((n+1)^2) + 2*((HarmonicNumber[n,1])^2)/((n+1)^2)+2*(HarmonicNumber[n+1,1])/((n+1)^2)+2*(HarmonicNumber[n+1,1])/((n+1)^3)-(4*n+3)*(HarmonicNumber[n,2])/((n+1)^2)+2*(HarmonicNumber[n,2])/(n+1)+4/(n+1) - 2*(n+1)/(n^2)+2/(n*(n+1))+4/(n*(n+1)^2)+2/((n^2)*(n+1)^2)+ 4/((n+1)^2)- 2/((n+1)^3)-1/((n+1)^4) )
+LemY16rhs[n_]:=(HarmonicNumber[n,1])^2-4*(HarmonicNumber[n,1])+5*(HarmonicNumber[n,2])-4 +4*((HarmonicNumber[n,1])^2)/n-4*(HarmonicNumber[n,1])/(n-1)- 8*(HarmonicNumber[n+1,1])/(n+1) -4*(HarmonicNumber[n,2])/(n-1) - 4*(4*n+3)*(HarmonicNumber[n,2])/((n+1)^2) +8*(HarmonicNumber[n,2])/(n+1)+ 32*(HarmonicNumber[n,2])/(n-1)+4/(n-1)+ 16/(n+1)  - 8*(n+1)/(n^2) - 32/(n-1)+4*((HarmonicNumber[n,1])^2)/((n-1)*n)-4*((HarmonicNumber[n+1,1])^2)/((n+1)^2) + 8*((HarmonicNumber[n,1])^2)/((n+1)^2)+8*(HarmonicNumber[n+1,1])/((n+1)^2)- 32*(HarmonicNumber[n+1,1])/((n-1)*(n+1))+32*(HarmonicNumber[n,2])/((n-1)*(n+1))+32*(HarmonicNumber[n,2])/((n-1)^2)-16*(4*n+3)*(HarmonicNumber[n,2])/((n-1)*(n+1)^2)+8/(n*(n+1))+ 16/((n+1)^2)+ 64/((n-1)*(n+1)) - 32*(n+1)/((n-1)*n^2) - 32/((n-1)^2)-16*((HarmonicNumber[n+1,1])^2)/((n-1)*(n+1)^2)+ 32*((HarmonicNumber[n,1])^2)/((n-1)*(n+1)^2)+8*(HarmonicNumber[n+1,1])/((n+1)^3) + 32*(HarmonicNumber[n+1,1])/((n-1)(n+1)^2)- 32*(HarmonicNumber[n+1,1])/(((n-1)^2)*(n+1))-16*(4*n+3)*(HarmonicNumber[n,2])/(((n-1)^2)*(n+1)^2)+32*(HarmonicNumber[n,2])/(((n-1)^2)*(n+1))+16/(n*(n+1)^2)- 8/((n+1)^3)  + 64/((n-1)*(n+1)^2)+ 64/(((n-1)^2)*(n+1))  - 32*(n+1)/(((n-1)^2)*n^2) + 32*((HarmonicNumber[n,1])^2)/(((n-1)^2)*((n+1)^2))-16*((HarmonicNumber[n+1,1])^2)/(((n-1)^2)*(n+1)^2)+32*(HarmonicNumber[n+1,1])/((n-1)*(n+1)^3) + 32*(HarmonicNumber[n+1,1])/(((n-1)^2)*(n+1)^2)+8/((n^2)*(n+1)^2) -4/((n+1)^4)+32/((n-1)*n*(n+1))- 32/((n-1)*(n+1)^3) + 64/(((n-1)^2)*((n+1)^2))+32*(HarmonicNumber[n+1,1])/(((n-1)^2)*(n+1)^3)+32/(((n-1)^2)*n*(n+1))+64/((n-1)*n*(n+1)^2) + 32/((n-1)*(n^2)*(n+1)^2) - 16/((n-1)*(n+1)^4)+ 64/(((n-1)^2)*n*(n+1)^2)- 32/(((n-1)^2)*(n+1)^3)+32/(((n-1)^2)*(n^2)*(n+1)^2) - 16/(((n-1)^2)*(n+1)^4)
+Clear[n];n=2;N[LemY16lhsline3[n]- LemY16rhs[n]]
+(* result:  0. *)
+Clear[n];n=1;N[LemY16lhsline3[n]- LemY16rhs[n]]
+(*output: Power::infy: Infinite expression 1/0 encountered. Indeterminate*)
+Clear[n];n=10;N[LemY16lhsline3[n]- LemY16rhs[n]]
+(* result:  0. *)
+Clear[n];n=100;N[LemY16lhsline3[n]- LemY16rhs[n]]
+(* result:  0. *)
+Clear[n];n=1000;N[LemY16lhsline3[n]- LemY16rhs[n]]
+(* result:  0. *)
+
+
+(* Lemma Y1.7 *)
+LemY17lhs[n_]:=LemY11lhs[n]-LemY15lhs[n]
+LemY17rhs[n_]:=8-4*(HarmonicNumber[n,2])-(2*(HarmonicNumber[n,1])^2)/(n-1)+ (8*(HarmonicNumber[n+1,1]))/(n+1)  -(4*(HarmonicNumber[n,1]))/(n-1)-(32*(HarmonicNumber[n,2]))/(n-1)+(4*(4*n+3)*(HarmonicNumber[n,2]))/((n+1)^2)-(8*(HarmonicNumber[n,2]))/(n+1)+(6*(HarmonicNumber[n,2]))/(n-1) - 16/(n+1) +8*(n+1)/(n^2) +32/(n-1)+(4*(HarmonicNumber[n+1,1])^2)/((n+1)^2) - (8*(HarmonicNumber[n,1])^2)/((n+1)^2)-(8*(HarmonicNumber[n+1,1]))/((n+1)^2)+ (32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1))-(32*(HarmonicNumber[n,2]))/((n-1)^2)-(32*(HarmonicNumber[n,2]))/((n-1)*(n+1))-8/(n*(n+1))- 16/((n+1)^2)- 64/((n-1)*(n+1))  +32*(n+1)/((n-1)*n^2) +32/((n-1)^2)- (32*(HarmonicNumber[n,1])^2)/((n-1)*(n+1)^2) +(16*(HarmonicNumber[n+1,1])^2)/((n-1)*(n+1)^2) -(8*(HarmonicNumber[n+1,1]))/((n+1)^3)-(32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1)^2)+ (32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1))  +(16*(4*n+3)*(HarmonicNumber[n,2])/((n-1)*(n+1)^2) -(32*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1))-16/(n*(n+1)^2)+ 8/((n+1)^3) -32/((n-1)*n*(n+1))- 64/((n-1)*(n+1)^2)- 64/(((n-1)^2)*(n+1))  +32*(n+1)/(((n-1)^2)*n^2)+(16*(HarmonicNumber[n+1,1])^2)/(((n-1)^2)*(n+1)^2)- (32*(HarmonicNumber[n,1])^2)/(((n-1)^2)*(n+1)^2)-(32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1)^3) -(32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1)^2)+(16*(4*n+3)*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1)^2)-8/((n^2)*(n+1)^2) +4/(n+1)^4)-64/((n-1)*n*(n+1)^2)+ 32/((n-1)*(n+1)^3) -32/(((n-1)^2)*n*(n+1))- 64/(((n-1)^2)*(n+1)^2)-(32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1)^3)-32/((n-1)*(n^2)*(n+1)^2) + 16/((n-1)*(n+1)^4)-64/(((n-1)^2)*n*(n+1)^2)+ 32/(((n-1)^2)*(n+1)^3)-32/(((n-1)^2)*(n^2)*(n+1)^2) +16/(((n-1)^2)*(n+1)^4)
+Clear[n];n=2;N[LemY17lhs[n]-LemY17rhs[n]]
+(* result: 0 *)
+Clear[n];n=10;N[LemY17lhs[n]-LemY17rhs[n]]
+(* result: 0 *)
+Clear[n];n=100;N[LemY17lhs[n]-LemY17rhs[n]]
+(* result: 0 *)
+Clear[n];n=1000;N[LemY17lhs[n]-LemY17rhs[n]] 
+(* result: 0 *)
+Clear[n];Limit[LemY17rhs[n],{n->Infinity}]
+(* result:  8-2*(Pi^2)/3 *)
+Clear[n];N[Limit[LemY17rhs[n],{n->Infinity}]]
+(* result: 1.42026 *)
+
+
+(* Lemma Y1.8 *)
+LemY18lhs[n_]:=Etaun2[n]-(Etaun[n])^2
+LemY18rhs[n_]:= (n+1)*HarmonicNumber[n,2]/(n-1) -2*(n+1)*(HarmonicNumber[n,1]^2)/((n-1)^2)+4*(n+1)*HarmonicNumber[n,1]/((n-1)^2)-4/(n-1)-4/((n-1)^2)
+Clear[n];FullSimplify[LemY18lhs[n]-LemY18rhs[n]]
+(* result: 0 *)
+Clear[n];Limit[LemY18rhs[n],n->Infinity]
+(* result: (Pi^2)/6 *)
+Clear[n];N[Limit[LemY18rhs[n],n->Infinity]]
+(* result: 1.64493 *)
+
+
+
+(* Lemma Y1.9 *)
+LemY19lhs[n_]:=LemY16lhsline3[n]-(Etaun[n])^2
+LemY19rhs[n_]:=5*(HarmonicNumber[n,2])-8+4*HarmonicNumber[n,2]*(5*(n^2)+15*n+8)/((n-1)*(n+1)^2)-4*(7*(n^3)+15*(n^2)-2*n-2)/((n-1)*(n^2)*(n+1))-(4*(HarmonicNumber[n+1,1])^2)/((n+1)^2)+(8*(HarmonicNumber[n,1])^2)/((n+1)^2)-(4*(HarmonicNumber[n,1])^2)/((n-1)^2)+(8*(HarmonicNumber[n+1,1]))/((n+1)^2)-(32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1))+(8*(HarmonicNumber[n,1]))/((n-1)^2)+(16*(HarmonicNumber[n,1]))/((n-1)*(n+1))+(32*(HarmonicNumber[n,2]))/((n-1)*(n+1))+(32*(HarmonicNumber[n,2]))/((n-1)^2)-(16*(4*n+3)*(HarmonicNumber[n,2]))/((n-1)*(n+1)^2)+(8)/(n*(n+1))+(16)/((n+1)^2)+(64)/((n-1)*(n+1))-(32*(n+1))/((n-1)*n^2)-(32)/((n-1)^2)-(4)/((n-1)^2)-(8)/((n+1)^2)-(16*(HarmonicNumber[n+1,1])^2)/((n-1)*(n+1)^2)+(32*(HarmonicNumber[n,1])^2)/((n-1)*(n+1)^2)+(8*(HarmonicNumber[n+1,1]))/((n+1)^3)+(32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1)^2)-(32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1))-(16*(4*n+3)*(HarmonicNumber[n,2]))/(((n-1)^2)*((n+1)^2))+(32*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1))+(16)/(n*(n+1)^2)-(8)/((n+1)^3)+(64)/((n-1)*(n+1)^2)+(64)/(((n-1)^2)*(n+1))-(32*(n+1))/(((n-1)^2)*(n^2))+(32*(HarmonicNumber[n,1])^2)/(((n-1)^2)*((n+1)^2))-(16*(HarmonicNumber[n+1,1])^2)/(((n-1)^2)*(n+1)^2)+(32*(HarmonicNumber[n+1,1]))/((n-1)*(n+1)^3)+(32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1)^2)+(8)/((n^2)*((n+1)^2))-(4)/((n+1)^4)+(32)/((n-1)*n*(n+1))-(32)/((n-1)*(n+1)^3)+(64)/(((n-1)^2)*(n+1)^2)+(32*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1)^3)+(32)/(((n-1)^2)*n*(n+1))+(64)/((n-1)*n*(n+1)^2)+(32)/((n-1)*(n^2)*(n+1)^2)-(16)/((n-1)*(n+1)^4)+(64)/(((n-1)^2)*n*(n+1)^2)-(32)/(((n-1)^2)*(n+1)^3)+(32)/(((n-1)^2)*(n^2)*(n+1)^2)-(16)/(((n-1)^2)*(n+1)^4)
+Clear[n];FullSimplify[LemY19lhs[n]-LemY19rhs[n]]
+(* result: 0 *)
+Clear[n];Limit[LemY19rhs[n],{n->Infinity}]
+(* result: -8 + 5*(Pi^2)/6 *)
+Clear[n];N[Limit[LemY19rhs[n],{n->Infinity}]]
+(* result: 0.22467 *)
+
+
+
+(* Lemma Y1.10 *)
+LemY110lhs[n_]:=LemY11lhs[n]-(HarmonicNumber[n,1]-Etaun[n])^2
+LemY110rhs[n_]:=4*(HarmonicNumber[n,2]-1)-2*(HarmonicNumber[n,1]^2)/(n-1)+4*HarmonicNumber[n,1]/(n-1)+6*HarmonicNumber[n,2]/(n-1)-8/(n-1)-4*((HarmonicNumber[n,1]-1)^2)/((n-1)^2)
+Clear[n];FullSimplify[LemY110lhs[n]-LemY110rhs[n]]
+(* result: 0 *)
+Clear[n];Limit[LemY110rhs[n],{n->Infinity}]
+(* result: 2(-6+(Pi^2))/3 *)
+Clear[n];N[Limit[LemY110rhs[n],{n->Infinity}]]
+(* result: 2.57974 *)
+
+
+
+(* Lemma Y1.11 *)
+LemY111lhs[n_]:=LemY15rhs[n]-(HarmonicNumber[n,1]-Etaun[n])^2
+LemY111rhs[n_]:=8*(HarmonicNumber[n,2])-12+(8*(HarmonicNumber[n,2])*(3*(n^2)+10*n+3))/((n-1)*(n+1)^2)+(8*(-4*(n^3)-8*(n^2)+n+1))/((n-1)*(n^2)*(n+1))-(16*(4*n+3)*(HarmonicNumber[n,2]))/((n-1)*(n+1)^2)+(32*(HarmonicNumber[n,2]))/((n-1)*(n+1))+(32*(HarmonicNumber[n,2]))/((n-1)^2)-(12*(HarmonicNumber[n,2]))/((n+1)^2)+8/(n*(n+1))+16/((n+1)^2)+64/((n-1)*(n+1))-(32*(n+1))/((n-1)*(n^2))-32/((n-1)^2)-4/((n-1)^2)-8/((n+1)^2)-(16*(4*n+3)*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1)^2)+(32*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1))+16/(n*(n+1)^2)+32/((n-1)*n*(n+1))+64/((n-1)*(n+1)^2)+64/(((n-1)^2)*(n+1))-(32*(n+1))/(((n-1)^2)*(n^2))-32/((n-1)*(n+1)^2)+8/((n^2)*(n+1)^2)-8/((n+1)^4)+64/((n-1)*n*(n+1)^2)-32/((n-1)*(n+1)^3)+32/(((n-1)^2)*n*(n+1))+64/(((n-1)^2)*(n+1)^2)+8/((n+1)^4)+32/((n-1)*(n^2)*(n+1)^2)+64/(((n-1)^2)*n*(n+1)^2)-64/(((n-1)^2)*(n+1)^3)+32/(((n-1)^2)*(n^2)*(n+1)^2)
+Clear[n];FullSimplify[LemY111lhs[n]-LemY111rhs[n]]
+(* result: 0 *)
+Clear[n];Limit[LemY111rhs[n],{n->Infinity}]
+(* result 4(-9+Pi^2)/3 *)
+Clear[n];N[Limit[LemY111rhs[n],{n->Infinity}]]
+(* result: 1.15947 *)
+
+
+(* Lemma Y1.12 *)
+LemY112lhs[n_]:=LemY16rhs[n]-(Etaun[n])^2
+LemY112rhs[n_]:=5*(HarmonicNumber[n,2])-8-(4*(HarmonicNumber[n,2]))/(n-1)-(4*(4*n+3)*(HarmonicNumber[n,2]))/((n+1)^2)+(8*(HarmonicNumber[n,2]))/(n+1)+(32*(HarmonicNumber[n,2]))/(n-1)+(4)/(n-1)+(16)/(n+1)-(8*(n+1))/((n^2))-(32)/(n-1)-(8)/(n-1)+(8*(HarmonicNumber[n+1,1]))/((n+1)^2)-(16*(HarmonicNumber[n,1]))/((n-1)*(n+1))+(8*(HarmonicNumber[n,1]))/((n-1)^2)+(8)/(n(n+1))+(16)/((n+1)^2)+(64)/((n-1)*(n+1))-(32*(n+1))/((n-1)*(n^2))-(32)/((n-1)^2)-(4)/((n-1)^2)-(8)/((n+1)^2)+(64*n*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1)^2)+(32*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1))-(48*(HarmonicNumber[n,2]))/((n-1)*(n+1)^2)+(16)/(n*(n+1)^2)-(8)/((n+1)^3)+(32)/((n-1)*(n+1)^2)+(64)/(((n-1)^2)*(n+1))-(32*(n+1))/(((n-1)^2)*(n^2))-(48*(HarmonicNumber[n,2]))/(((n-1)^2)*(n+1)^2)-(32*(HarmonicNumber[n,1]))/((n-1)*(n+1)^3)+(8)/((n^2)*(n+1)^2)+(32)/((n-1)*n*(n+1))-(32)/((n-1)*(n+1)^3)+(64)/(((n-1)^2)*(n+1)^2)-(64*(HarmonicNumber[n+1,1]))/(((n-1)^2)*(n+1)^3)+(32)/(((n-1)^2)*n*(n+1))+(64)/((n-1)*n*(n+1)^2)+(32)/((n-1)*(n^2)*(n+1)^2)-(16)/((n-1)*(n+1)^4)+(64)/(((n-1)^2)*n*(n+1)^2)-(32)/(((n-1)^2)*(n+1)^3)-(16)/((n-1)*(n+1)^4)+(32)/(((n-1)^2)*(n^2)*(n+1)^2)
+Clear[n];FullSimplify[LemY112lhs[n]-LemY112rhs[n]]
+(* result: 0 *)
+Clear[n];Limit[LemY112rhs[n],{n->Infinity}]
+(* result: -8 + 5*(Pi^2)/6  *)
+Clear[n];N[Limit[LemY112rhs[n],{n->Infinity}]]
+(* result: 0.22467  *)
+
+
