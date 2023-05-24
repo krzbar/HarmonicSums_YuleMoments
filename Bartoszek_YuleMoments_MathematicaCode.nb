@@ -13,6 +13,7 @@ PrPink[n_,k_]:=(2*(n+1)/(n-1))*(1/((k+1)*(k+2)))
 
 
 (* Example Y1.2 *)
+EUn2[n_]:=HarmonicNumber[n,1]^2+HarmonicNumber[n,2]
 Etaun[n_]:=(n+1)*(HarmonicNumber[n,1]-2)/(n-1)+2/(n-1)
 Etaun2[n_]:=(n+1)*((HarmonicNumber[n,1]-2)^2+HarmonicNumber[n,2])/(n-1)-4/(n-1)
 
