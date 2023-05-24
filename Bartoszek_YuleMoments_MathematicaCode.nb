@@ -20,6 +20,8 @@ Etaun2[n_]:=(n+1)*((HarmonicNumber[n,1]-2)^2+HarmonicNumber[n,2])/(n-1)-4/(n-1)
 (* Lemma Y2.1 *)
 LemY21lhs[n_]:=((4*n+2)/(n-1))*HarmonicNumber[n,2]-2*(HarmonicNumber[n,1]^2)/(n-1)-4*HarmonicNumber[n,1]/(n-1)
 
+(* Lemma Y2.3 *)
+LemmaY23rhs[n_]:=2*n*(HarmonicNumber[n,1]+HarmonicNumber[n,2]-1-(HarmonicNumber[n,1]^2)/n)/(n-1)
 
 (* Lemma Y2.5 *)
 LemY25lhs[n_]:=Sum[(HarmonicNumber[k,2]+(HarmonicNumber[k,1]^2))*(PrPink[n,k]^2),{k,1,n-1}]+2*Sum[Sum[((HarmonicNumber[k1,2]+(HarmonicNumber[k1,1]^2))+HarmonicNumber[k1,1]*(HarmonicNumber[k2,1]-HarmonicNumber[k1,1]))*(PrPink[n,k1]*PrPink[n,k2]),{k2,k1+1,n-1}],{k1,1,n-1}]
