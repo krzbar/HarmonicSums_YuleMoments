@@ -3,7 +3,7 @@ Mathematica code used to check, numerically or where possible
 analytically, the formulae derived in  K. Bartoszek 
 First two moments and cross–moments for the
 pure birth tree's height and random pair's
-coalescent times, arXiv: .
+coalescent times.
 The code was run using Mathematica 12.0.0 for  Linux x86 (64-bit), 
 openSUSE Leap 15.2 box. All the references in this script point to 
 appropriate fragments of the manuscript. 
