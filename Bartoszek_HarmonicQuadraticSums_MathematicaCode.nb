@@ -2,7 +2,7 @@
 Mathematica code used to check, numerically or where possible 
 analytically, the formulae derived in  K. Bartoszek 
 A miscellaneous collection of closed and asymptotic formulae 
-for harmonic and quadratic harmonic sums, arXiv: .
+for harmonic and quadratic harmonic sums.
 The code was run using Mathematica 12.0.0 for  Linux x86 (64-bit), 
 openSUSE Leap 15.2 box. Some of the formulae here are presented in terms of harmonic sums, 
 only whose limits are known. It is interesting that we managed to provide closed form formulae,
