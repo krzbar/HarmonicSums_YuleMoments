@@ -7,6 +7,13 @@ coalescent times.
 The code was run using Mathematica 12.0.0 for  Linux x86 (64-bit), 
 openSUSE Leap 15.2 box. All the references in this script point to 
 appropriate fragments of the manuscript. 
+
+This software comes AS IS in the hope that it will be useful WITHOUT ANY WARRANTY, 
+NOT even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+Please understand that there may still be bugs and errors. Use it at your own risk. 
+We take no responsibility for any errors or omissions in this code or for any misfortune 
+that may befall you or others as a result of its use. Please send comments and report 
+bugs to Krzysztof Bartoszek at krzbar@protonmail.ch .
 *)
 
 PrPink[n_,k_]:=(2*(n+1)/(n-1))*(1/((k+1)*(k+2)))
